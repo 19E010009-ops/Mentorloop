@@ -140,6 +140,14 @@
 
 <script>
   let points = 40;
+function helpStudent() {
+  points += 10;
+  renderBadges();
+}
+function approvedAnswer() {
+  points += 20;
+  renderBadges();
+}
 
   const badgeRules = [
     { name: "Curious Learner", points: 20 },
