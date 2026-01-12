@@ -91,16 +91,17 @@
   <h1>Ask a Doubt</h1>
   <p>Get academic help from mentors and teachers</p>
 </header>
-
 <div class="container">
   <div class="card">
+    <form action="dashboard.html">
+    <label for="name>Your name</label>
+     <input type="text" id="name" placeholder="Enter your name" required />
+      <label for="grade">Class / Grade</label>
     <form action="submitted.html">
       <label for="name">Your Name</label>
       <input type="text" id="name" placeholder="Enter your name" required />
-
       <label for="grade">Class / Grade</label>
       <input type="text" id="grade" placeholder="e.g. Class 9" required />
-
       <label for="subject">Subject</label>
       <select id="subject" required>
         <option value="">Select subject</option>
@@ -111,28 +112,21 @@
         <option>Computer Science</option>
         <option>Other</option>
       </select>
-
       <label for="question">Your Question</label>
       <textarea id="question" placeholder="Type your academic doubt clearly..." required></textarea>
-
       <div class="checkbox">
         <input type="checkbox" id="agree" required />
         <label for="agree">I agree to follow the <a href="fair-play.html">Fair Play & Safety rules</a>.</label>
       </div>
-
       <button type="submit">Submit Doubt</button>
     </form>
   </div>
-
   <p style="margin-top:20px; text-align:center;">
     <a href="index.html">← Back to MentorLoop Home</a>
   </p>
 </div>
-
 <footer>
   © 2026 MentorLoop • Ask • Learn • Grow
 </footer>
-
 </body>
 </html>
-
