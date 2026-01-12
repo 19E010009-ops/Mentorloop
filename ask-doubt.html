@@ -1,132 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>MentorLoop | Ask a Doubt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
-      margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: #f9fafb;
-      color: #1f2937;
-    }
-    header {
-      background: #2563eb;
-      color: white;
-      padding: 50px 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin-bottom: 10px;
-      font-size: 2.2rem;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-    .card {
-      background: white;
+      background: #f3f4f6;
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    h2 {
+      color: #1e40af;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin-bottom: 40px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
     label {
       display: block;
-      margin-top: 20px;
+      margin-top: 15px;
       font-weight: bold;
     }
     input, select, textarea {
       width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      font-size: 1rem;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
     textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-    .checkbox {
-      margin-top: 20px;
-    }
-    .checkbox input {
-      width: auto;
-      margin-right: 8px;
+      min-height: 100px;
     }
     button {
-      margin-top: 30px;
+      margin-top: 20px;
+      padding: 12px;
       width: 100%;
-      padding: 14px;
-      font-size: 1.1rem;
       background: #2563eb;
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
       cursor: pointer;
     }
     button:hover {
       background: #1d4ed8;
     }
-    footer {
-      background: #111827;
-      color: #d1d5db;
-      text-align: center;
-      padding: 25px 15px;
-      margin-top: 60px;
-      font-size: 0.9rem;
-    }
-    a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: bold;
+    hr {
+      margin: 50px 0;
     }
   </style>
 </head>
+
 <body>
 
-<header>
-  <h1>Ask a Doubt</h1>
-  <p>Get academic help from mentors and teachers</p>
-</header>
-<div class="container">
-  <div class="card">
-    <form action="dashboard.html">
-    <label for="name>Your name</label>
-     <input type="text" id="name" placeholder="Enter your name" required />
-      <label for="grade">Class / Grade</label>
-    <form action="submitted.html">
-      <label for="name">Your Name</label>
-      <input type="text" id="name" placeholder="Enter your name" required />
-      <label for="grade">Class / Grade</label>
-      <input type="text" id="grade" placeholder="e.g. Class 9" required />
-      <label for="subject">Subject</label>
-      <select id="subject" required>
-        <option value="">Select subject</option>
-        <option>Mathematics</option>
-        <option>Science</option>
-        <option>English</option>
-        <option>Social Studies</option>
-        <option>Computer Science</option>
-        <option>Other</option>
-      </select>
-      <label for="question">Your Question</label>
-      <textarea id="question" placeholder="Type your academic doubt clearly..." required></textarea>
-      <div class="checkbox">
-        <input type="checkbox" id="agree" required />
-        <label for="agree">I agree to follow the <a href="fair-play.html">Fair Play & Safety rules</a>.</label>
-      </div>
-      <button type="submit">Submit Doubt</button>
-    </form>
-  </div>
-  <p style="margin-top:20px; text-align:center;">
-    <a href="index.html">← Back to MentorLoop Home</a>
-  </p>
-</div>
-<footer>
-  © 2026 MentorLoop • Ask • Learn • Grow
-</footer>
+  <!-- LOGIN FORM -->
+  <h2>Login</h2>
+  <form action="dashboard.html">
+    <label>Email</label>
+    <input type="email" required>
+
+    <label>Password</label>
+    <input type="password" required>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <hr>
+
+  <!-- ASK A DOUBT FORM -->
+  <h2>Ask a Doubt</h2>
+  <form action="submitted.html">
+    <label>Subject</label>
+    <select required>
+      <option value="">Select subject</option>
+      <option>Math</option>
+      <option>Science</option>
+      <option>English</option>
+    </select>
+
+    <label>Your Question</label>
+    <textarea required placeholder="Type your doubt clearly..."></textarea>
+
+    <button type="submit">Submit Doubt</button>
+  </form>
+
 </body>
 </html>
