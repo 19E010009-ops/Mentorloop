@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MentorLoop | Dashboard with Badges</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    header {
+      background: #1e40af;
+      color: white;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    header a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    h2 {
+      margin-top: 0;
+      color: #1e40af;
+    }
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin: 6px 6px 0 0;
+      font-weight: bold;
+      background: #e0e7ff;
+      color: #1e40af;
+    }
+    .locked {
+      background: #e5e7eb;
+      color: #6b7280;
+    }
+    .progress {
+      margin-top: 10px;
+      background: #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 10px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #2563eb;
+      width: 0%;
+    }
+    .small {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>MentorLoop Dashboard</h1>
+  <a href="index.html">Logout</a>
+</header>
+
+<div class="container">
+  <div class="grid">
+
+    <div class="card">
+      <h2>Your Profile</h2>
+      <p><strong>Name:</strong> Student Name</p>
+      <p><strong>Role:</strong> Student</p>
+      <p><strong>Points:</strong> <span id="points">40</span></p>
+    </div>
+
+    <div class="card">
+      <h2>Your Badges</h2>
+      <div id="badges"></div>
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <p class="small">Earn points by asking good questions and helping others.</p>
+    </div>
+
+    <div class="card">
+      <h2>Simulate Activity</h2>
+      <p class="small">(For demo / testing)</p>
+      <button onclick="addPoints(10)">+10 Points (Asked a good doubt)</button>
+      <button onclick="addPoints(20)">+20 Points (Helped another student)</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let points = 40;
+
+  const badgeRules = [
+    { name: "Curious Learner", points: 20 },
+    { name: "Active Student", points: 50 },
+    { name: "Peer Helper", points: 100 }
+  ];
+
+  function renderBadges() {
+    const badgeContainer = document.getElementById("badges");
+    badgeContainer.innerHTML = "";
+
+    badgeRules.forEach(rule => {
+      const span = document.createElement("span");
+      span.className = "badge" + (points >= rule.points ? "" : " locked");
+      span.textContent = rule.name;
+      badgeContainer.appendChild(span);
+    });
+
+    const next = badgeRules.find(b => points < b.points);
+    const progress = next ? (points / next.points) * 100 : 100;
+    document.getElementById("progressBar").style.width = progress + "%";
+    document.getElementById("points").textContent = points;
+  }
+
+  function addPoints(value) {
+    points += value;
+    renderBadges();
+  }
+
+  renderBadges();
+</script>
+
+</body>
+</html>
