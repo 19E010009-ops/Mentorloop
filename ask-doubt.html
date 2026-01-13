@@ -95,24 +95,19 @@
   function submitDoubt(e) {
     e.preventDefault();
 
-    // Load existing points or start at 40
     let points = localStorage.getItem("mentorloop_points")
       ? parseInt(localStorage.getItem("mentorloop_points"))
       : 40;
 
-    // Asking a good doubt = +5 points
     points += 5;
-
-    // Save updated points
     localStorage.setItem("mentorloop_points", points);
 
-    // Optional feedback
     alert("Doubt submitted! +5 points earned 🧠✨");
 
-    // Redirect to don't-worry page
     window.location.href = "submitted.html";
   }
 </script>
 </html>
+
 
 
