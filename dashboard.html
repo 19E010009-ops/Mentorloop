@@ -199,6 +199,27 @@
   }
 
   renderBadges();
+  function loadActivity() {
+    const log =
+      JSON.parse(localStorage.getItem("mentorloop_activity")) || [];
+
+    const list = document.getElementById("activityLog");
+    list.innerHTML = "";
+
+    if (log.length === 0) {
+      list.innerHTML = "<li>No activity yet.</li>";
+      return;
+    }
+
+    log.slice(0, 5).forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      list.appendChild(li);
+    });
+  }
+
+  renderBadges();
+  loadActivity();   
 </script>
 
 </body>
