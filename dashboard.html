@@ -167,7 +167,8 @@
 </div>
 
 <script>
-  // Load saved points or start at 40
+  // ALL JavaScript goes here
+
   let points = localStorage.getItem("mentorloop_points")
     ? parseInt(localStorage.getItem("mentorloop_points"))
     : 40;
@@ -198,7 +199,6 @@
     localStorage.setItem("mentorloop_points", points);
   }
 
-  renderBadges();
   function loadActivity() {
     const log =
       JSON.parse(localStorage.getItem("mentorloop_activity")) || [];
@@ -219,7 +219,7 @@
   }
 
   renderBadges();
-  loadActivity();   
+  loadActivity();
 </script>
 
 </body>
