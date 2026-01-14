@@ -125,28 +125,12 @@
   <h2>Simulate Activity</h2>
   <p class="small">(For demo / testing)</p>
 
-    <a href="ask-doubt.html">
-  <button>Ask a Doubt</button>
-</a>
-
 <a href="questions.html">
   <button>Help another student</button>
 </a>
+<a href="questions.html" class="btn">Help another student</a>
 
-  <button onclick="helpStudent()">
-    +10 Points <a href="questions.html">
-  <button>Help another student</button>
 </a>
-  <button onclick="approvedAnswer()">
-    +20 Points (Answer marked helpful)
-  </button>
-</div>
-
-<script>
-  let points = 40;
-function helpStudent() {
-  points += 10;
-  renderBadges();
 }
 function approvedAnswer() {
   points += 20;
