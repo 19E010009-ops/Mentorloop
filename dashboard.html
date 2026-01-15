@@ -6,6 +6,59 @@
   <title>MentorLoop | Dashboard</title>
 
   <style>
+  #aiBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+#aiBox {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 10px;
+}
+
+#aiHeader {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+#aiChat {
+  height: 160px;
+  overflow-y: auto;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+#aiInput {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 6px;
+}
+
+#aiSend {
+  width: 100%;
+  padding: 6px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
@@ -123,6 +176,16 @@
 <div class="container">
   <div class="grid">
 
+    <!-- MentorBot -->
+<button id="aiBtn">🤖</button>
+
+<div id="aiBox" style="display:none;">
+  <div id="aiHeader">MentorBot</div>
+  <div id="aiChat"></div>
+  <input id="aiInput" placeholder="Ask me where to go…" />
+  <button id="aiSend">Send</button>
+</div>
+
     <!-- Profile -->
     <div class="card">
       <h2>Your Profile</h2>
@@ -159,7 +222,6 @@
 </div>
 
 <script>
-  // ALL JavaScript goes here
 
   let points = localStorage.getItem("mentorloop_points")
     ? parseInt(localStorage.getItem("mentorloop_points"))
@@ -212,6 +274,41 @@
 
   renderBadges();
   loadActivity();
+  document.getElementById("aiBtn").onclick = () => {
+  const box = document.getElementById("aiBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+};
+
+document.getElementById("aiSend").onclick = askAI;
+
+function askAI() {
+  const input = document.getElementById("aiInput");
+  const chat = document.getElementById("aiChat");
+  const q = input.value.toLowerCase();
+
+  let reply =
+    "🤖 I can help you navigate. Try asking about doubts, points, or helping students.";
+
+  if (q.includes("ask") || q.includes("doubt")) {
+    reply = "🧠 Click **Ask a Doubt** on the dashboard to post your question.";
+  } else if (q.includes("help")) {
+    reply = "🤝 Click **Help another student** to answer questions.";
+  } else if (q.includes("points")) {
+    reply =
+      "⭐ Points are earned by asking doubts and helping other students.";
+  } else if (q.includes("badge")) {
+    reply = "🏅 Badges unlock automatically as your points increase.";
+  } else if (q.includes("logout")) {
+    reply = "🚪 Click **Logout** at the top to exit the dashboard.";
+  }
+
+  chat.innerHTML += `<p><b>You:</b> ${input.value}</p>`;
+  chat.innerHTML += `<p><b>MentorBot:</b> ${reply}</p>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  input.value = "";
+}
+
 </script>
 
 </body>
