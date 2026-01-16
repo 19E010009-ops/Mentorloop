@@ -40,7 +40,7 @@
 
 <h1>Answer the Question</h1>
 
-<p><strong>Question:</strong> How do I solve linear equations with fractions?</p>
+<p><strong>Question:</strong> <span id="questionText"></span></p>
 
 <form onsubmit="submitAnswer(event)">
   <textarea required placeholder="Write your answer here..."></textarea>
@@ -48,6 +48,20 @@
 </form>
 
 <script>
+  // Read topic from URL
+  const params = new URLSearchParams(window.location.search);
+  const topic = params.get("topic");
+
+  // Map topics to questions
+  const questions = {
+    "linear-equations": "How do I solve linear equations with fractions?",
+    "photosynthesis": "Explain photosynthesis in simple words."
+  };
+
+  // Set the question text
+  document.getElementById("questionText").textContent =
+    questions[topic] || "Answer the question.";
+
   function submitAnswer(e) {
     e.preventDefault();
 
@@ -56,7 +70,7 @@
       ? parseInt(localStorage.getItem("mentorloop_points"))
       : 40;
 
-    points += 10; // helping another student
+    points += 10;
     localStorage.setItem("mentorloop_points", points);
 
     alert("Answer submitted! +10 points earned 🎉");
@@ -67,3 +81,4 @@
 
 </body>
 </html>
+
