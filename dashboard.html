@@ -104,29 +104,30 @@
       background: #1d4ed8;
     }
 
-    /* MentorBot AI */
+    /* ===== MentorBot AI ===== */
     #aiBtn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 50px;
-      height: 50px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       background: #2563eb;
       color: white;
       border: none;
       font-size: 22px;
       cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     }
 
     #aiBox {
       position: fixed;
-      bottom: 80px;
+      bottom: 85px;
       right: 20px;
       width: 280px;
       background: white;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
       padding: 10px;
       display: none;
     }
@@ -134,6 +135,7 @@
     #aiHeader {
       font-weight: bold;
       margin-bottom: 6px;
+      color: #1e40af;
     }
 
     #aiChat {
@@ -156,4 +158,129 @@
       color: white;
       border: none;
       border-radius: 6px;
-     
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>MentorLoop Dashboard</h1>
+  <a href="index.html">Logout</a>
+</header>
+
+<div class="container">
+  <div class="grid">
+
+    <div class="card">
+      <h2>Your Profile</h2>
+      <p><strong>Name:</strong> Student</p>
+      <p><strong>Role:</strong> Student</p>
+      <p><strong>Points:</strong> <span id="points">0</span></p>
+    </div>
+
+    <div class="card">
+      <h2>Your Badges</h2>
+      <div id="badges"></div>
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Actions</h2>
+      <a href="ask-doubt.html" class="btn">Ask a Doubt</a>
+      <a href="questions.html" class="btn">Help another student</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MentorBot HTML ===== -->
+<button id="aiBtn">🤖</button>
+
+<div id="aiBox">
+  <div id="aiHeader">MentorBot</div>
+  <div id="aiChat"></div>
+  <input id="aiInput" placeholder="Ask me where to go…" />
+  <button id="aiSend">Send</button>
+</div>
+
+<!-- ===== JavaScript ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* Points + Badges */
+  let points = localStorage.getItem("mentorloop_points")
+    ? parseInt(localStorage.getItem("mentorloop_points"))
+    : 40;
+
+  const badgeRules = [
+    { name: "Curious Learner", points: 20 },
+    { name: "Active Student", points: 50 },
+    { name: "Peer Helper", points: 100 }
+  ];
+
+  function renderBadges() {
+    const badgeContainer = document.getElementById("badges");
+    badgeContainer.innerHTML = "";
+
+    badgeRules.forEach(rule => {
+      const span = document.createElement("span");
+      span.className = "badge" + (points >= rule.points ? "" : " locked");
+      span.textContent = rule.name;
+      badgeContainer.appendChild(span);
+    });
+
+    const next = badgeRules.find(b => points < b.points);
+    const progress = next ? (points / next.points) * 100 : 100;
+
+    document.getElementById("progressBar").style.width = progress + "%";
+    document.getElementById("points").textContent = points;
+
+    localStorage.setItem("mentorloop_points", points);
+  }
+
+  renderBadges();
+
+  /* MentorBot AI */
+  const aiBtn = document.getElementById("aiBtn");
+  const aiBox = document.getElementById("aiBox");
+  const aiSend = document.getElementById("aiSend");
+  const aiInput = document.getElementById("aiInput");
+  const aiChat = document.getElementById("aiChat");
+
+  aiBtn.addEventListener("click", () => {
+    aiBox.style.display =
+      aiBox.style.display === "none" ? "block" : "none";
+  });
+
+  aiSend.addEventListener("click", () => {
+    const q = aiInput.value.trim().toLowerCase();
+    if (!q) return;
+
+    let reply = "🤖 I help you navigate MentorLoop.";
+
+    if (q.includes("doubt"))
+      reply = "🧠 Click **Ask a Doubt** on the dashboard.";
+    else if (q.includes("help"))
+      reply = "🤝 Click **Help another student**.";
+    else if (q.includes("points"))
+      reply = "⭐ You earn points by asking doubts and helping others.";
+    else if (q.includes("badge"))
+      reply = "🏅 Badges unlock automatically as points increase.";
+    else if (q.includes("logout"))
+      reply = "🚪 Use the Logout link at the top.";
+
+    aiChat.innerHTML += `<p><b>You:</b> ${aiInput.value}</p>`;
+    aiChat.innerHTML += `<p><b>MentorBot:</b> ${reply}</p>`;
+    aiChat.scrollTop = aiChat.scrollHeight;
+    aiInput.value = "";
+  });
+
+});
+</script>
+
+</body>
+</html>
