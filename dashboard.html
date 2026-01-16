@@ -6,59 +6,6 @@
   <title>MentorLoop | Dashboard</title>
 
   <style>
-  #aiBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #2563eb;
-  color: white;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-#aiBox {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 280px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  padding: 10px;
-}
-
-#aiHeader {
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-#aiChat {
-  height: 160px;
-  overflow-y: auto;
-  font-size: 14px;
-  margin-bottom: 6px;
-}
-
-#aiInput {
-  width: 100%;
-  padding: 6px;
-  margin-bottom: 6px;
-}
-
-#aiSend {
-  width: 100%;
-  padding: 6px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
@@ -152,16 +99,69 @@
       width: 100%;
       background: #2563eb;
       color: white;
-      border: none;
       border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
       text-align: center;
       text-decoration: none;
+      font-weight: bold;
     }
 
     .btn:hover {
       background: #1d4ed8;
+    }
+
+    /* AI */
+    #aiBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: white;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    #aiBox {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 280px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      padding: 10px;
+      display: none;
+    }
+
+    #aiHeader {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    #aiChat {
+      height: 160px;
+      overflow-y: auto;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    #aiInput {
+      width: 100%;
+      padding: 6px;
+      margin-bottom: 6px;
+    }
+
+    #aiSend {
+      width: 100%;
+      padding: 6px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -176,52 +176,47 @@
 <div class="container">
   <div class="grid">
 
-    <!-- MentorBot -->
-<button id="aiBtn">🤖</button>
-
-<div id="aiBox" style="display:none;">
-  <div id="aiHeader">MentorBot</div>
-  <div id="aiChat"></div>
-  <input id="aiInput" placeholder="Ask me where to go…" />
-  <button id="aiSend">Send</button>
-</div>
-
-    <!-- Profile -->
     <div class="card">
       <h2>Your Profile</h2>
-      <p><strong>Name:</strong> Student Name</p>
+      <p><strong>Name:</strong> Student</p>
       <p><strong>Role:</strong> Student</p>
       <p><strong>Points:</strong> <span id="points">0</span></p>
     </div>
 
-    <!-- Badges -->
     <div class="card">
       <h2>Your Badges</h2>
       <div id="badges"></div>
       <div class="progress">
         <div class="progress-bar" id="progressBar"></div>
       </div>
-      <p class="small">
-        Earn points by asking good doubts and helping other students.
-      </p>
     </div>
- 
-    }
 
-      <a href="ask-doubt.html" class="btn">
-        Ask a Doubt
-      </a>
+    <div class="card">
+      <h2>Recent Activity</h2>
+      <ul id="activityLog" class="small"></ul>
+    </div>
 
-      <a href="questions.html" class="btn">
-        Help another student
-      </a>
-
+    <div class="card">
+      <h2>Actions</h2>
+      <a href="ask-doubt.html" class="btn">Ask a Doubt</a>
+      <a href="questions.html" class="btn">Help another student</a>
     </div>
 
   </div>
 </div>
 
+<!-- MentorBot -->
+<button id="aiBtn">🤖</button>
+
+<div id="aiBox">
+  <div id="aiHeader">MentorBot</div>
+  <div id="aiChat"></div>
+  <input id="aiInput" placeholder="Ask me where to go…" />
+  <button id="aiSend">Send</button>
+</div>
+
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
   let points = localStorage.getItem("mentorloop_points")
     ? parseInt(localStorage.getItem("mentorloop_points"))
@@ -254,9 +249,7 @@
   }
 
   function loadActivity() {
-    const log =
-      JSON.parse(localStorage.getItem("mentorloop_activity")) || [];
-
+    const log = JSON.parse(localStorage.getItem("mentorloop_activity")) || [];
     const list = document.getElementById("activityLog");
     list.innerHTML = "";
 
@@ -274,41 +267,36 @@
 
   renderBadges();
   loadActivity();
-  document.getElementById("aiBtn").onclick = () => {
-  const box = document.getElementById("aiBox");
-  box.style.display = box.style.display === "none" ? "block" : "none";
-};
 
-document.getElementById("aiSend").onclick = askAI;
+  const aiBtn = document.getElementById("aiBtn");
+  const aiBox = document.getElementById("aiBox");
+  const aiSend = document.getElementById("aiSend");
 
-function askAI() {
-  const input = document.getElementById("aiInput");
-  const chat = document.getElementById("aiChat");
-  const q = input.value.toLowerCase();
+  aiBtn.onclick = () => {
+    aiBox.style.display = aiBox.style.display === "none" ? "block" : "none";
+  };
 
-  let reply =
-    "🤖 I can help you navigate. Try asking about doubts, points, or helping students.";
+  aiSend.onclick = () => {
+    const input = document.getElementById("aiInput");
+    const chat = document.getElementById("aiChat");
+    const q = input.value.toLowerCase();
+    if (!q) return;
 
-  if (q.includes("ask") || q.includes("doubt")) {
-    reply = "🧠 Click **Ask a Doubt** on the dashboard to post your question.";
-  } else if (q.includes("help")) {
-    reply = "🤝 Click **Help another student** to answer questions.";
-  } else if (q.includes("points")) {
-    reply =
-      "⭐ Points are earned by asking doubts and helping other students.";
-  } else if (q.includes("badge")) {
-    reply = "🏅 Badges unlock automatically as your points increase.";
-  } else if (q.includes("logout")) {
-    reply = "🚪 Click **Logout** at the top to exit the dashboard.";
-  }
+    let reply = "🤖 I help you navigate MentorLoop.";
 
-  chat.innerHTML += `<p><b>You:</b> ${input.value}</p>`;
-  chat.innerHTML += `<p><b>MentorBot:</b> ${reply}</p>`;
-  chat.scrollTop = chat.scrollHeight;
+    if (q.includes("doubt")) reply = "🧠 Click **Ask a Doubt** on the dashboard.";
+    else if (q.includes("help")) reply = "🤝 Click **Help another student**.";
+    else if (q.includes("points")) reply = "⭐ Earn points by asking doubts and helping others.";
+    else if (q.includes("badge")) reply = "🏅 Badges unlock as your points grow.";
+    else if (q.includes("logout")) reply = "🚪 Click Logout at the top.";
 
-  input.value = "";
-}
+    chat.innerHTML += `<p><b>You:</b> ${input.value}</p>`;
+    chat.innerHTML += `<p><b>MentorBot:</b> ${reply}</p>`;
+    chat.scrollTop = chat.scrollHeight;
+    input.value = "";
+  };
 
+});
 </script>
 
 </body>
