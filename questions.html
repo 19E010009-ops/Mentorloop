@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MentorLoop EDU | Ask a Doubt</title>
+  <title>MentorLoop EDU | Student Questions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -10,59 +10,48 @@
       background: #f3f4f6;
       padding: 30px;
     }
-    form {
+    .question {
       background: white;
       padding: 20px;
-      border-radius: 12px;
-      max-width: 600px;
+      border-radius: 10px;
+      margin-bottom: 20px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
+    h2 {
+      color: #1e40af;
+      margin-bottom: 5px;
     }
-    button {
-      margin-top: 15px;
-      padding: 12px;
-      width: 100%;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
+    a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #2563eb;
+      font-weight: bold;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
 
-<h1>Ask a Doubt</h1>
-
-<form onsubmit="submitDoubt(event)">
-  <input id="subject" required placeholder="Subject (Math, Science, English)" />
-  <textarea id="question" required placeholder="Type your doubt here..."></textarea>
-  <button type="submit">Submit Doubt</button>
-</form>
+<h1>Questions Asked by Students</h1>
+<div id="questionsContainer"></div>
 
 <script>
-function submitDoubt(e) {
-  e.preventDefault();
+const container = document.getElementById("questionsContainer");
+const doubts = JSON.parse(localStorage.getItem("mentorloop_doubts")) || [];
 
-  const subject = document.getElementById("subject").value.trim();
-  const question = document.getElementById("question").value.trim();
-
-  let doubts = JSON.parse(localStorage.getItem("mentorloop_doubts")) || [];
-
-  doubts.unshift({
-    subject: subject,
-    question: question
+if (doubts.length === 0) {
+  container.innerHTML = "<p>No questions yet. Be the first to ask!</p>";
+} else {
+  doubts.forEach((doubt, index) => {
+    const div = document.createElement("div");
+    div.className = "question";
+    div.innerHTML = `
+      <h2>${doubt.subject}</h2>
+      <p>${doubt.question}</p>
+      <a href="answer.html?index=${index}">Answer this</a>
+    `;
+    container.appendChild(div);
   });
-
-  localStorage.setItem("mentorloop_doubts", JSON.stringify(doubts));
-
-  alert("Doubt submitted successfully!");
-  window.location.href = "questions.html";
 }
 </script>
 
