@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MentorLoop | Student Questions</title>
+  <title>MentorLoop EDU | Ask a Doubt</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -10,72 +10,61 @@
       background: #f3f4f6;
       padding: 30px;
     }
-    .question {
+    form {
       background: white;
       padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      max-width: 600px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
-    h2 {
-      color: #1e40af;
-      margin-bottom: 5px;
-    }
-    p {
-      margin-top: 5px;
-    }
-    a {
-      display: inline-block;
+    input, textarea {
+      width: 100%;
+      padding: 10px;
       margin-top: 10px;
-      color: #2563eb;
-      font-weight: bold;
-      text-decoration: none;
+    }
+    button {
+      margin-top: 15px;
+      padding: 12px;
+      width: 100%;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<h1>Questions Asked by Students</h1>
+<h1>Ask a Doubt</h1>
 
-<!-- Math -->
-<div class="question">
-  <h2>Math</h2>
-  <p>Why do we cross-multiply in linear equations?</p>
-  <a href="answer.html?topic=linear-equations">Answer this</a>
-</div>
+<form onsubmit="submitDoubt(event)">
+  <input id="subject" required placeholder="Subject (Math, Science, English)" />
+  <textarea id="question" required placeholder="Type your doubt here..."></textarea>
+  <button type="submit">Submit Doubt</button>
+</form>
 
-<div class="question">
-  <h2>Math</h2>
-  <p>What is the real-life use of linear equations?</p>
-  <a href="answer.html?topic=linear-equations">Answer this</a>
-</div>
+<script>
+function submitDoubt(e) {
+  e.preventDefault();
 
-<!-- Science -->
-<div class="question">
-  <h2>Science</h2>
-  <p>Why is photosynthesis important for life on Earth?</p>
-  <a href="answer.html?topic=photosynthesis">Answer this</a>
-</div>
+  const subject = document.getElementById("subject").value.trim();
+  const question = document.getElementById("question").value.trim();
 
-<div class="question">
-  <h2>Science</h2>
-  <p>Where does the oxygen released in photosynthesis come from?</p>
-  <a href="answer.html?topic=photosynthesis">Answer this</a>
-</div>
+  let doubts = JSON.parse(localStorage.getItem("mentorloop_doubts")) || [];
 
-<!-- English -->
-<div class="question">
-  <h2>English</h2>
-  <p>How do I improve my vocabulary for exams?</p>
-  <a href="answer.html?topic=english-writing">Answer this</a>
-</div>
+  doubts.unshift({
+    subject: subject,
+    question: question
+  });
 
-<!-- Social Science -->
-<div class="question">
-  <h2>Social Science</h2>
-  <p>Why is democracy considered better than other forms of government?</p>
-  <a href="answer.html?topic=democracy">Answer this</a>
-</div>
+  localStorage.setItem("mentorloop_doubts", JSON.stringify(doubts));
+
+  alert("Doubt submitted successfully!");
+  window.location.href = "questions.html";
+}
+</script>
 
 </body>
 </html>
