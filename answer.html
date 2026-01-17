@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MentorLoop | Answer Question</title>
+  <title>MentorLoop EDU | Student Questions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -10,77 +10,34 @@
       background: #f3f4f6;
       padding: 30px;
     }
-    form {
+    .question {
       background: white;
       padding: 20px;
       border-radius: 10px;
-      max-width: 600px;
+      margin-bottom: 20px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
-    textarea {
-      width: 100%;
-      height: 120px;
-      margin-top: 10px;
-      padding: 10px;
+    h2 {
+      color: #1e40af;
     }
-    button {
-      margin-top: 20px;
-      padding: 12px;
-      width: 100%;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
+    a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #2563eb;
+      font-weight: bold;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
 
-<h1>Answer the Question</h1>
+<h1>Questions Asked by Students</h1>
+<div id="questionsContainer">Loading...</div>
 
-<p><strong>Question:</strong> <span id="questionText"></span></p>
-
-<form onsubmit="submitAnswer(event)">
-  <textarea required placeholder="Write your answer here..."></textarea>
-  <button type="submit">Submit Answer</button>
-</form>
-
-<script>
-  // Read topic from URL
-  const params = new URLSearchParams(window.location.search);
-  const topic = params.get("topic");
-
-  // Map topics to questions
-  const questions = {
-    "linear-equations": "How do I solve linear equations with fractions?",
-    "photosynthesis": "Explain photosynthesis in simple words."
-  };
-
-  // Set the question text
-  document.getElementById("questionText").textContent =
-    questions[topic] || "Answer the question.";
-
-  function submitAnswer(e) {
-    e.preventDefault();
-
-    // Award points for helping another student
-    let points = localStorage.getItem("mentorloop_points")
-      ? parseInt(localStorage.getItem("mentorloop_points"))
-      : 40;
-
-    points += 10;
-    localStorage.setItem("mentorloop_points", points);
-
-    alert("Answer submitted! +10 points earned 🎉");
-
-    window.location.href = "dashboard.html";
-  }
-</script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, query, orderBy }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDsHwrmeZyI9zNpoI86OQz1eBSIFxv6j1I",
@@ -94,36 +51,29 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  window.db = db;
-<script type="module">
-  import { doc, getDoc, updateDoc, increment } 
-  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  const container = document.getElementById("questionsContainer");
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+  const q = query(collection(db, "doubts"), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
 
-  async function loadQuestion() {
-    const ref = doc(window.db, "doubts", id);
-    const snap = await getDoc(ref);
-    document.getElementById("questionText").textContent = snap.data().question;
+  container.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    const d = doc.data();
+    const div = document.createElement("div");
+    div.className = "question";
+    div.innerHTML = `
+      <h2>${d.subject}</h2>
+      <p>${d.question}</p>
+      <a href="answer.html?id=${doc.id}">Answer this</a>
+    `;
+    container.appendChild(div);
+  });
+
+  if (container.innerHTML === "") {
+    container.innerHTML = "<p>No doubts yet.</p>";
   }
-
-  async function submitAnswer(e) {
-    e.preventDefault();
-
-    let points = parseInt(localStorage.getItem("mentorloop_points") || "40");
-    points += 10;
-    localStorage.setItem("mentorloop_points", points);
-
-    alert("Answer submitted! +10 points");
-    window.location.href = "dashboard.html";
-  }
-
-  loadQuestion();
-  window.submitAnswer = submitAnswer;
 </script>
+
 </body>
 </html>
-
-
-
