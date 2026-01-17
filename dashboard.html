@@ -167,7 +167,10 @@
 <header>
   <h1>MentorLoop EDU Dashboard</h1>
 <p><strong>Name:</strong> <span id="userName"></span></p>
-  <a href="index.html">Logout</a>
+  <a href="login.html" onclick="localStorage.removeItem('mentorloop_user')">
+  Logout
+</a>
+
 </header>
 
 <div class="container">
@@ -209,6 +212,11 @@
 
 <!-- ===== JavaScript ===== -->
 <script>
+  const user = localStorage.getItem("mentorloop_user");
+if (!user) {
+  window.location.href = "login.html";
+}
+  document.getElementById("userName").textContent = user;
   document.getElementById("userName").textContent = user;
   const user = localStorage.getItem("mentorloop_user");
 if (!user) {
