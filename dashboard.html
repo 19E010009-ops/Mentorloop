@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MentorLoop EDU | Dashboard</title>
-
   <style>
     body {
       margin: 0;
@@ -167,6 +166,7 @@
 
 <header>
   <h1>MentorLoop EDU Dashboard</h1>
+<p><strong>Name:</strong> <span id="userName"></span></p>
   <a href="index.html">Logout</a>
 </header>
 
@@ -209,6 +209,12 @@
 
 <!-- ===== JavaScript ===== -->
 <script>
+  document.getElementById("userName").textContent = user;
+  const user = localStorage.getItem("mentorloop_user");
+if (!user) {
+  window.location.href = "login.html";
+}
+
 document.addEventListener("DOMContentLoaded", function () {
 
   /* Points + Badges */
