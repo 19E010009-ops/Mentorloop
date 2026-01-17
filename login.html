@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MentorLoop EDU | Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f4f6;
+      padding: 40px;
+    }
+    form {
+      background: white;
+      padding: 25px;
+      max-width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Welcome to MentorLoop EDU</h2>
+
+<form onsubmit="login(event)">
+  <input id="name" required placeholder="Enter your name">
+  <button type="submit">Enter</button>
+</form>
+
+<script>
+function login(e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  localStorage.setItem("mentorloop_user", name);
+  window.location.href = "dashboard.html";
+}
+</script>
+
+</body>
+</html>
