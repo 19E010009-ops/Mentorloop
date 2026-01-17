@@ -83,8 +83,42 @@ function submitDoubt(e) {
   const db = getFirestore(app);
 
   window.db = db;
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDsHwrmeZyI9zNpoI86OQz1eBSIFxv6j1I",
+    authDomain: "mentorloop-edu.firebaseapp.com",
+    projectId: "mentorloop-edu",
+    storageBucket: "mentorloop-edu.appspot.com",
+    messagingSenderId: "314688209644",
+    appId: "1:314688209644:web:b8fa243642971947969bc9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.submitDoubt = async function (e) {
+    e.preventDefault();
+
+    const subject = document.getElementById("subject").value;
+    const question = document.getElementById("question").value;
+
+    await addDoc(collection(db, "doubts"), {
+      subject,
+      question,
+      createdAt: serverTimestamp()
+    });
+
+    alert("Doubt submitted!");
+    window.location.href = "questions.html";
+  };
 </script>
+
 
 </body>
 </html>
+
 
