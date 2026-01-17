@@ -39,119 +39,45 @@
 
 <h1>Ask a Doubt</h1>
 
-<form onsubmit="submitDoubt(event)">
-  <input id="subject" required placeholder="Subject (Math, Science, English)" />
+<form id="doubtForm">
+  <input id="subject" required placeholder="Subject (Math, Science, etc.)" />
   <textarea id="question" required placeholder="Type your doubt here..."></textarea>
   <button type="submit">Submit Doubt</button>
 </form>
 
-<script>
-function submitDoubt(e) {
-  e.preventDefault();
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  const subject = document.getElementById("subject").value.trim();
-  const question = document.getElementById("question").value.trim();
+  const firebaseConfig = {
+    apiKey: "AIzaSyDsHwrmeZyI9zNpoI86OQz1eBSIFxv6j1I",
+    authDomain: "mentorloop-edu.firebaseapp.com",
+    projectId: "mentorloop-edu",
+    storageBucket: "mentorloop-edu.appspot.com",
+    messagingSenderId: "314688209644",
+    appId: "1:314688209644:web:b8fa243642971947969bc9"
+  };
 
-  let doubts = JSON.parse(localStorage.getItem("mentorloop_doubts")) || [];
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-  doubts.unshift({
-    subject: subject,
-    question: question
+  document.getElementById("doubtForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const subject = document.getElementById("subject").value.trim();
+    const question = document.getElementById("question").value.trim();
+
+    await addDoc(collection(db, "doubts"), {
+      subject,
+      question,
+      createdAt: serverTimestamp()
+    });
+
+    alert("Doubt submitted successfully!");
+    window.location.href = "questions.html";
   });
-
-  localStorage.setItem("mentorloop_doubts", JSON.stringify(doubts));
-
-  alert("Doubt submitted successfully!");
-  window.location.href = "questions.html";
-}
-</script>
-
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDsHwrmeZyI9zNpoI86OQz1eBSIFxv6j1I",
-    authDomain: "mentorloop-edu.firebaseapp.com",
-    projectId: "mentorloop-edu",
-    storageBucket: "mentorloop-edu.appspot.com",
-    messagingSenderId: "314688209644",
-    appId: "1:314688209644:web:b8fa243642971947969bc9"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  window.db = db;
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp }
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDsHwrmeZyI9zNpoI86OQz1eBSIFxv6j1I",
-    authDomain: "mentorloop-edu.firebaseapp.com",
-    projectId: "mentorloop-edu",
-    storageBucket: "mentorloop-edu.appspot.com",
-    messagingSenderId: "314688209644",
-    appId: "1:314688209644:web:b8fa243642971947969bc9"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  window.submitDoubt = async function (e) {
-    e.preventDefault();
-
-    const subject = document.getElementById("subject").value;
-    const question = document.getElementById("question").value;
-
-    await addDoc(collection(db, "doubts"), {
-      subject,
-      question,
-      createdAt: serverTimestamp()
-    });
-
-    alert("Doubt submitted!");
-    window.location.href = "questions.html";
-  };
-</script>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp }
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDsHwrmeZyI9zNpoI86OQz1eBSIFxv6j1I",
-    authDomain: "mentorloop-edu.firebaseapp.com",
-    projectId: "mentorloop-edu",
-    storageBucket: "mentorloop-edu.appspot.com",
-    messagingSenderId: "314688209644",
-    appId: "1:314688209644:web:b8fa243642971947969bc9"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  window.submitDoubt = async function (e) {
-    e.preventDefault();
-
-    const subject = document.getElementById("subject").value;
-    const question = document.getElementById("question").value;
-
-    await addDoc(collection(db, "doubts"), {
-      subject,
-      question,
-      createdAt: serverTimestamp()
-    });
-
-    alert("Doubt submitted!");
-    window.location.href = "questions.html";
-  };
 </script>
 
 </body>
 </html>
-
-
-
