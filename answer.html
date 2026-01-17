@@ -95,9 +95,35 @@
   const db = getFirestore(app);
 
   window.db = db;
-</script>
+<script type="module">
+  import { doc, getDoc, updateDoc, increment } 
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  async function loadQuestion() {
+    const ref = doc(window.db, "doubts", id);
+    const snap = await getDoc(ref);
+    document.getElementById("questionText").textContent = snap.data().question;
+  }
+
+  async function submitAnswer(e) {
+    e.preventDefault();
+
+    let points = parseInt(localStorage.getItem("mentorloop_points") || "40");
+    points += 10;
+    localStorage.setItem("mentorloop_points", points);
+
+    alert("Answer submitted! +10 points");
+    window.location.href = "dashboard.html";
+  }
+
+  loadQuestion();
+  window.submitAnswer = submitAnswer;
+</script>
 </body>
 </html>
+
 
 
