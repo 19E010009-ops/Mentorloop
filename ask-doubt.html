@@ -10,40 +10,45 @@
       background: #f3f4f6;
       padding: 30px;
     }
-    form {
+    .card {
       background: white;
       padding: 20px;
       border-radius: 12px;
       max-width: 600px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
-    input, textarea {
+    input, textarea, button {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
+      padding: 12px;
+      margin-top: 12px;
     }
     button {
-      margin-top: 15px;
-      padding: 12px;
-      width: 100%;
       background: #2563eb;
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 1rem;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<h1>Ask a Doubt</h1>
+<h1>MentorLoop EDU</h1>
 
-<form id="doubtForm">
-  <input id="subject" required placeholder="Subject (Math, Science, etc.)" />
-  <textarea id="question" required placeholder="Type your doubt here..."></textarea>
-  <button type="submit">Submit Doubt</button>
-</form>
+<div class="card" id="loginBox">
+  <h2>Enter your name</h2>
+  <input id="name" placeholder="Your name" />
+  <button onclick="login()">Continue</button>
+</div>
+
+<div class="card" id="doubtBox" style="display:none;">
+  <h2>Ask a Doubt</h2>
+  <p><strong>Student:</strong> <span id="userName"></span></p>
+
+  <input id="subject" placeholder="Subject (Math, Science, etc.)" />
+  <textarea id="question" placeholder="Type your doubt here..."></textarea>
+  <button onclick="submitDoubt()">Submit Doubt</button>
+</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -62,21 +67,41 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  document.getElementById("doubtForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  const user = localStorage.getItem("mentorloop_user");
 
+  if (user) {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("doubtBox").style.display = "block";
+    document.getElementById("userName").textContent = user;
+  }
+
+  window.login = function () {
+    const name = document.getElementById("name").value.trim();
+    if (!name) return alert("Enter your name");
+    localStorage.setItem("mentorloop_user", name);
+    location.reload();
+  };
+
+  window.submitDoubt = async function () {
     const subject = document.getElementById("subject").value.trim();
     const question = document.getElementById("question").value.trim();
+    const user = localStorage.getItem("mentorloop_user");
+
+    if (!subject || !question) {
+      alert("Fill all fields");
+      return;
+    }
 
     await addDoc(collection(db, "doubts"), {
       subject,
       question,
+      askedBy: user,
       createdAt: serverTimestamp()
     });
 
-    alert("Doubt submitted successfully!");
+    alert("Doubt submitted!");
     window.location.href = "questions.html";
-  });
+  };
 </script>
 
 </body>
