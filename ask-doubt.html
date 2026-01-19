@@ -1,17 +1,65 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>MentorLoop EDU | Ask a Doubt</title>
+</head>
 <body>
 
-<h2>Test Submit</h2>
+<h2>MentorLoop EDU</h2>
 
-<input id="subject" placeholder="Subject"><br><br>
-<textarea id="question" placeholder="Question"></textarea><br><br>
-<button id="submitBtn">Submit</button>
+<div id="loginBox">
+  <input id="name" placeholder="Enter your name">
+  <button onclick="login()">Continue</button>
+</div>
+
+<div id="doubtBox" style="display:none;">
+  <p>Logged in as <b id="userName"></b></p>
+
+  <input id="subject" placeholder="Subject">
+  <br><br>
+  <textarea id="question" placeholder="Type your doubt"></textarea>
+  <br><br>
+  <button onclick="submitDoubt()">Submit Doubt</button>
+</div>
 
 <script>
-document.getElementById("submitBtn").addEventListener("click", () => {
-  alert("BUTTON CLICKED SUCCESSFULLY");
-});
+const user = localStorage.getItem("ml_user");
+
+if (user) {
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("doubtBox").style.display = "block";
+  document.getElementById("userName").textContent = user;
+}
+
+function login() {
+  const name = document.getElementById("name").value.trim();
+  if (!name) return alert("Enter name");
+  localStorage.setItem("ml_user", name);
+  location.reload();
+}
+
+function submitDoubt() {
+  const subject = document.getElementById("subject").value.trim();
+  const question = document.getElementById("question").value.trim();
+  const user = localStorage.getItem("ml_user");
+
+  if (!subject || !question) {
+    alert("Fill all fields");
+    return;
+  }
+
+  let doubts = JSON.parse(localStorage.getItem("ml_doubts")) || [];
+
+  doubts.unshift({
+    subject,
+    question,
+    askedBy: user
+  });
+
+  localStorage.setItem("ml_doubts", JSON.stringify(doubts));
+  alert("Doubt submitted!");
+  window.location.href = "questions.html";
+}
 </script>
 
 </body>
