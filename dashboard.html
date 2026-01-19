@@ -1,299 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>MentorLoop EDU | Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       background: #f3f4f6;
-      color: #1f2937;
+      padding: 30px;
     }
-
-    header {
-      background: #1e40af;
-      color: white;
-      padding: 20px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
-
-    header a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 30px 20px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
     .card {
       background: white;
       padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #1e40af;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      margin: 6px 6px 0 0;
-      font-weight: bold;
-      background: #e0e7ff;
-      color: #1e40af;
-    }
-
-    .locked {
-      background: #e5e7eb;
-      color: #6b7280;
-    }
-
-    .progress {
-      margin-top: 10px;
-      background: #e5e7eb;
-      border-radius: 8px;
-      overflow: hidden;
-      height: 10px;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: #2563eb;
-      width: 0%;
-    }
-
-    .btn {
-      display: block;
-      margin-top: 12px;
-      padding: 12px;
-      width: 100%;
-      background: #2563eb;
-      color: white;
-      border-radius: 8px;
-      text-align: center;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .btn:hover {
-      background: #1d4ed8;
-    }
-
-    /* ===== MentorBot AI ===== */
-    #aiBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #2563eb;
-      color: white;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-    }
-
-    #aiBox {
-      position: fixed;
-      bottom: 85px;
-      right: 20px;
-      width: 280px;
-      background: white;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      padding: 10px;
-      display: none;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
-
-    #aiHeader {
-      font-weight: bold;
-      margin-bottom: 6px;
-      color: #1e40af;
-    }
-
-    #aiChat {
-      height: 160px;
-      overflow-y: auto;
-      font-size: 14px;
-      margin-bottom: 6px;
-    }
-
-    #aiInput {
-      width: 100%;
-      padding: 6px;
-      margin-bottom: 6px;
-    }
-
-    #aiSend {
-      width: 100%;
-      padding: 6px;
+    button {
+      padding: 10px 14px;
+      margin-top: 10px;
       background: #2563eb;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 0.95rem;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .ai-box {
+      background: #eef2ff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    .logout {
+      background: #dc2626;
+    }
+    .report {
+      background: #fef2f2;
+      border-left: 5px solid #dc2626;
+    }
+    .small {
+      font-size: 0.85rem;
+      color: #6b7280;
     }
   </style>
 </head>
-
 <body>
 
-<header>
-  <h1>MentorLoop EDU Dashboard</h1>
-<p><strong>Name:</strong> <span id="userName"></span></p>
-  <a href="login.html" onclick="localStorage.removeItem('mentorloop_user')">
-  Logout
-</a>
+<h1>MentorLoop EDU Dashboard</h1>
 
-</header>
-
-<div class="container">
-  <div class="grid">
-
-    <div class="card">
-      <h2>Your Profile</h2>
-      <p><strong>Name:</strong> Student</p>
-      <p><strong>Role:</strong> Student</p>
-      <p><strong>Points:</strong> <span id="points">0</span></p>
-    </div>
-
-    <div class="card">
-      <h2>Your Badges</h2>
-      <div id="badges"></div>
-      <div class="progress">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Actions</h2>
-      <a href="ask-doubt.html" class="btn">Ask a Doubt</a>
-      <a href="questions.html" class="btn">Help another student</a>
-    </div>
-
-  </div>
+<!-- PROFILE -->
+<div class="card">
+  <p><strong>Name:</strong> <span id="userName"></span></p>
+  <p><strong>Points:</strong> <span id="points"></span></p>
 </div>
 
-<!-- ===== MentorBot HTML ===== -->
-<button id="aiBtn">🤖</button>
-
-<div id="aiBox">
-  <div id="aiHeader">MentorBot</div>
-  <div id="aiChat"></div>
-  <input id="aiInput" placeholder="Ask me where to go…" />
-  <button id="aiSend">Send</button>
+<!-- BADGES -->
+<div class="card">
+  <h2>Your Badges</h2>
+  <ul id="badges"></ul>
 </div>
 
-<!-- ===== JavaScript ===== -->
+<!-- ACTIONS -->
+<div class="card">
+  <h2>Actions</h2>
+  <button onclick="goAsk()">Ask a Doubt</button><br>
+  <button onclick="goHelp()">Help Another Student</button><br>
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<!-- AI GUIDE -->
+<div class="card">
+  <h2>🤖 MentorLoop AI Guide</h2>
+  <input id="aiInput" placeholder="Ask me what to do..." />
+  <button onclick="aiRespond()">Ask AI</button>
+  <div class="ai-box" id="aiResponse"></div>
+</div>
+
+<!-- SAFE PLAY REPORTING -->
+<div class="card report">
+  <h2>🚨 Report a Problem (Fair Play)</h2>
+  <p class="small">
+    Use this only if you see misuse, bullying, spam, or unsafe behavior.
+  </p>
+
+  <select id="reportReason">
+    <option value="">Select reason</option>
+    <option>Bullying or harassment</option>
+    <option>Spam or irrelevant content</option>
+    <option>Inappropriate language</option>
+    <option>Cheating or misuse</option>
+    <option>Other</option>
+  </select>
+
+  <textarea id="reportDetails" placeholder="Optional details (what happened?)"></textarea>
+
+  <button onclick="submitReport()">Submit Report</button>
+</div>
+
 <script>
-  const user = localStorage.getItem("mentorloop_user");
+/* 🔐 PROTECTION */
+const user = localStorage.getItem("ml_user");
 if (!user) {
-  window.location.href = "login.html";
-}
-  document.getElementById("userName").textContent = user;
-  document.getElementById("userName").textContent = user;
-  const user = localStorage.getItem("mentorloop_user");
-if (!user) {
-  window.location.href = "login.html";
+  window.location.href = "ask-doubt.html";
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+/* 👤 USER DATA */
+document.getElementById("userName").textContent = user;
+const points = parseInt(localStorage.getItem("ml_points") || "0");
+document.getElementById("points").textContent = points;
 
-  /* Points + Badges */
-  let points = localStorage.getItem("mentorloop_points")
-    ? parseInt(localStorage.getItem("mentorloop_points"))
-    : 40;
+/* 🏅 BADGES */
+const badges = document.getElementById("badges");
+if (points >= 10) badges.innerHTML += "<li>Helper 🟢</li>";
+if (points >= 30) badges.innerHTML += "<li>Mentor 🔵</li>";
+if (points >= 50) badges.innerHTML += "<li>Legend 🟣</li>";
 
-  const badgeRules = [
-    { name: "Curious Learner", points: 20 },
-    { name: "Active Student", points: 50 },
-    { name: "Peer Helper", points: 100 }
-  ];
+/* 🔁 NAVIGATION */
+function goAsk() {
+  window.location.href = "ask-doubt.html";
+}
+function goHelp() {
+  window.location.href = "questions.html";
+}
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
 
-  function renderBadges() {
-    const badgeContainer = document.getElementById("badges");
-    badgeContainer.innerHTML = "";
+/* 🤖 AI GUIDE */
+function aiRespond() {
+  const input = document.getElementById("aiInput").value.toLowerCase();
+  const box = document.getElementById("aiResponse");
 
-    badgeRules.forEach(rule => {
-      const span = document.createElement("span");
-      span.className = "badge" + (points >= rule.points ? "" : " locked");
-      span.textContent = rule.name;
-      badgeContainer.appendChild(span);
-    });
+  if (input.includes("ask")) {
+    box.innerHTML = "📘 Click <b>Ask a Doubt</b> to share your question.";
+  } else if (input.includes("help")) {
+    box.innerHTML = "🤝 Click <b>Help Another Student</b> to answer questions.";
+  } else if (input.includes("points")) {
+    box.innerHTML = "⭐ Earn points by helping others. More points = more badges.";
+  } else if (input.includes("report")) {
+    box.innerHTML = "🚨 Use the <b>Report a Problem</b> section to maintain fair play.";
+  } else if (input.includes("logout")) {
+    box.innerHTML = "🚪 Click the red <b>Logout</b> button to exit.";
+  } else {
+    box.innerHTML = "🤔 Try asking: <i>'How do I help?' or 'How do I report misuse?'</i>";
+  }
+}
 
-    const next = badgeRules.find(b => points < b.points);
-    const progress = next ? (points / next.points) * 100 : 100;
+/* 🚨 REPORT SYSTEM */
+function submitReport() {
+  const reason = document.getElementById("reportReason").value;
+  const details = document.getElementById("reportDetails").value;
 
-    document.getElementById("progressBar").style.width = progress + "%";
-    document.getElementById("points").textContent = points;
-
-    localStorage.setItem("mentorloop_points", points);
+  if (!reason) {
+    alert("Please select a reason");
+    return;
   }
 
-  renderBadges();
+  let reports = JSON.parse(localStorage.getItem("ml_reports")) || [];
 
-  /* MentorBot AI */
-  const aiBtn = document.getElementById("aiBtn");
-  const aiBox = document.getElementById("aiBox");
-  const aiSend = document.getElementById("aiSend");
-  const aiInput = document.getElementById("aiInput");
-  const aiChat = document.getElementById("aiChat");
-
-  aiBtn.addEventListener("click", () => {
-    aiBox.style.display =
-      aiBox.style.display === "none" ? "block" : "none";
+  reports.push({
+    reportedBy: user,
+    reason: reason,
+    details: details,
+    time: new Date().toLocaleString()
   });
 
-  aiSend.addEventListener("click", () => {
-    const q = aiInput.value.trim().toLowerCase();
-    if (!q) return;
+  localStorage.setItem("ml_reports", JSON.stringify(reports));
 
-    let reply = "🤖 I help you navigate MentorLoop EDU.";
-
-    if (q.includes("doubt"))
-      reply = "🧠 Click **Ask a Doubt** on the dashboard.";
-    else if (q.includes("help"))
-      reply = "🤝 Click **Help another student**.";
-    else if (q.includes("points"))
-      reply = "⭐ You earn points by asking doubts and helping others.";
-    else if (q.includes("badge"))
-      reply = "🏅 Badges unlock automatically as points increase.";
-    else if (q.includes("logout"))
-      reply = "🚪 Use the Logout link at the top.";
-
-    aiChat.innerHTML += `<p><b>You:</b> ${aiInput.value}</p>`;
-    aiChat.innerHTML += `<p><b>MentorBot:</b> ${reply}</p>`;
-    aiChat.scrollTop = aiChat.scrollHeight;
-    aiInput.value = "";
-  });
-
-});
+  alert("Report submitted. Thank you for keeping MentorLoop EDU safe.");
+  document.getElementById("reportReason").value = "";
+  document.getElementById("reportDetails").value = "";
+}
 </script>
 
 </body>
