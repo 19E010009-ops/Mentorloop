@@ -179,6 +179,37 @@ function submitReport() {
   document.getElementById("reportReason").value = "";
   document.getElementById("reportDetails").value = "";
 }
+
+/* 🚨 AUTO-WARNING SYSTEM */
+
+function checkWarnings() {
+  const user = localStorage.getItem("ml_user");
+  if (!user) return;
+
+  const reports = JSON.parse(localStorage.getItem("ml_reports")) || [];
+  const userReports = reports.filter(r => r.reportedBy === user);
+
+  if (userReports.length === 2) {
+    alert(
+      "⚠️ Fair Play Warning\n\n" +
+      "We’ve received multiple reports linked to your activity.\n" +
+      "Please follow MentorLoop EDU Fair Play guidelines."
+    );
+  }
+
+  if (userReports.length >= 3) {
+    alert(
+      "🚨 Account Under Review\n\n" +
+      "Your activity has been flagged multiple times.\n" +
+      "Please use MentorLoop EDU responsibly.\n" +
+      "A teacher may review this later."
+    );
+  }
+}
+
+/* Run check on dashboard load */
+checkWarnings();
+
 </script>
 
 </body>
