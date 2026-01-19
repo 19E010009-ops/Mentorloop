@@ -4,146 +4,34 @@
   <meta charset="UTF-8">
   <title>MentorLoop EDU | Ask a Doubt</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
       margin: 0;
-      min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
       background: #f3f4f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
     }
-
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #1e40af;
-      text-align: center;
-    }
-
-    p {
-      text-align: center;
-      color: #374151;
-      font-size: 0.95rem;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-top: 12px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      font-size: 0.95rem;
-      box-sizing: border-box;
-    }
-
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 18px;
-      padding: 14px;
-      background: #2563eb;
+    header {
+      background: #1e40af;
       color: white;
+      padding: 16px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    iframe {
+      width: 100%;
+      height: 90vh;
       border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-    }
-
-    .user {
-      font-weight: bold;
-      color: #2563eb;
     }
   </style>
 </head>
-
 <body>
 
-  <!-- LOGIN -->
-  <div class="card" id="loginBox">
-    <h2>Welcome to MentorLoop EDU</h2>
-    <p>Enter your name to continue</p>
-    <input id="name" placeholder="Your name">
-    <button onclick="login()">Continue</button>
-  </div>
+<header>MentorLoop EDU — Ask a Doubt</header>
 
-  <!-- ASK DOUBT -->
-  <div class="card" id="doubtBox" style="display:none;">
-    <h2>Ask a Doubt</h2>
-    <p>Logged in as <span class="user" id="userName"></span></p>
-
-    <input id="subject" placeholder="Subject (Math, Science…)">
-    <textarea id="question" placeholder="Type your doubt clearly here…"></textarea>
-    <button onclick="submitDoubt()">Submit Doubt</button>
-  </div>
-
-<script>
-  const user = localStorage.getItem("ml_user");
-
-  if (user) {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("doubtBox").style.display = "block";
-    document.getElementById("userName").textContent = user;
-  }
-
-  function login() {
-    const name = document.getElementById("name").value.trim();
-    if (!name) return alert("Please enter your name");
-    localStorage.setItem("ml_user", name);
-    location.reload();
-  }
-
-  function submitDoubt() {
-    const subject = document.getElementById("subject").value.trim();
-    const question = document.getElementById("question").value.trim();
-    const user = localStorage.getItem("ml_user");
-
-    if (!subject || !question) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    let doubts = JSON.parse(localStorage.getItem("ml_doubts")) || [];
-
-    doubts.unshift({
-      subject,
-      question,
-      askedBy: user
-    });
-
-    localStorage.setItem("ml_doubts", JSON.stringify(doubts));
-    alert("Doubt submitted successfully!");
-    window.location.href = "questions.html";
-  }
-</script>
+<iframe 
+  src="https://docs.google.com/forms/d/e/1FAIpQLSdvpoXIRrjbXHztd8Yp7-01WEoS2Popfqtl5CgTWTULAEPzOw/viewform?embedded=true">
+</iframe>
 
 </body>
 </html>
