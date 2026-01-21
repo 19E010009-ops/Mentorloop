@@ -4,70 +4,34 @@
   <meta charset="UTF-8">
   <title>MentorLoop EDU | Questions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: #f3f4f6;
-      padding: 20px;
+      margin: 0;
     }
-    h1 {
-      color: #1e40af;
-    }
-    .question {
-      background: white;
+    header {
+      background: #1e40af;
+      color: white;
       padding: 16px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    }
-    .subject {
+      text-align: center;
+      font-size: 1.2rem;
       font-weight: bold;
-      color: #2563eb;
     }
-    .askedby {
-      font-size: 0.85rem;
-      color: #6b7280;
+    iframe {
+      width: 100%;
+      height: 90vh;
+      border: none;
     }
   </style>
 </head>
-
 <body>
 
-<h1>Student Questions</h1>
-<div id="questions">Loading questions…</div>
+<header>MentorLoop EDU — Student Questions</header>
 
-<script>
-const sheetId = "1ldFTc7TRPhKzPA9t2u1nZl_D8OE27jPl6VOm6EB-51g";
-const url = `https://opensheet.elk.sh/${sheetId}/Form Responses 1`;
-
-fetch(url)
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById("questions");
-    container.innerHTML = "";
-
-    if (data.length === 0) {
-      container.innerHTML = "<p>No questions yet.</p>";
-      return;
-    }
-
-    data.reverse().forEach(row => {
-      const div = document.createElement("div");
-      div.className = "question";
-      div.innerHTML = `
-        <div class="subject">${row.Subject || "General"}</div>
-        <p>${row.Question}</p>
-        <div class="askedby">Asked by ${row["Student Name"] || "Student"}</div>
-      `;
-      container.appendChild(div);
-    });
-  })
-  .catch(() => {
-    document.getElementById("questions").innerHTML =
-      "<p>Could not load questions.</p>";
-  });
-</script>
+<iframe
+  src="https://docs.google.com/spreadsheets/d/1ldFTc7TRPhKzPA9t2u1nZl_D8OE27jPl6VOm6EB-51g/edit?resourcekey#gid=218172152">
+</iframe>
 
 </body>
 </html>
