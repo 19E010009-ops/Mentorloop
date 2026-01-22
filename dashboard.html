@@ -4,213 +4,81 @@
   <meta charset="UTF-8">
   <title>MentorLoop EDU | Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
+      margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       background: #f3f4f6;
-      padding: 30px;
+      padding: 20px;
     }
+
+    h1 {
+      color: #1e40af;
+    }
+
     .card {
       background: white;
-      padding: 20px;
+      padding: 18px;
       border-radius: 12px;
       margin-bottom: 20px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
-    button {
-      padding: 10px 14px;
-      margin-top: 10px;
+
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
       background: #2563eb;
       color: white;
-      border: none;
+      font-weight: bold;
       border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.95rem;
+      text-decoration: none;
+      margin-right: 10px;
     }
-    input, select, textarea {
+
+    iframe {
       width: 100%;
-      padding: 10px;
+      height: 350px;
+      border: none;
       margin-top: 10px;
     }
-    .ai-box {
-      background: #eef2ff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 10px;
-    }
-    .logout {
-      background: #dc2626;
-    }
-    .report {
-      background: #fef2f2;
-      border-left: 5px solid #dc2626;
-    }
-    .small {
+
+    .note {
       font-size: 0.85rem;
       color: #6b7280;
+      margin-top: 8px;
     }
   </style>
 </head>
+
 <body>
 
 <h1>MentorLoop EDU Dashboard</h1>
 
-<!-- PROFILE -->
-<div class="card">
-  <p><strong>Name:</strong> <span id="userName"></span></p>
-  <p><strong>Points:</strong> <span id="points"></span></p>
-</div>
-
-<!-- BADGES -->
-<div class="card">
-  <h2>Your Badges</h2>
-  <ul id="badges"></ul>
-</div>
-
 <!-- ACTIONS -->
 <div class="card">
-  <h2>Actions</h2>
-  <button onclick="goAsk()">Ask a Doubt</button><br>
-  <button onclick="goHelp()">Help Another Student</button><br>
-  <button class="logout" onclick="logout()">Logout</button>
+  <a class="btn" href="ask-doubt.html">Ask a Doubt</a>
+  <a class="btn" href="questions.html">View Questions</a>
 </div>
 
-<!-- AI GUIDE -->
+<!-- ANSWERS SECTION -->
 <div class="card">
-  <h2>🤖 MentorLoop AI Guide</h2>
-  <input id="aiInput" placeholder="Ask me what to do..." />
-  <button onclick="aiRespond()">Ask AI</button>
-  <div class="ai-box" id="aiResponse"></div>
-</div>
+  <h2>✅ Answers from the Community</h2>
 
-<!-- SAFE PLAY REPORTING -->
-<div class="card report">
-  <h2>🚨 Report a Problem (Fair Play)</h2>
-  <p class="small">
-    Use this only if you see misuse, bullying, spam, or unsafe behavior.
+  <p class="note">
+    If someone has answered your question, it will appear here.
+    Look for the same question text you submitted.
   </p>
 
-  <select id="reportReason">
-    <option value="">Select reason</option>
-    <option>Bullying or harassment</option>
-    <option>Spam or irrelevant content</option>
-    <option>Inappropriate language</option>
-    <option>Cheating or misuse</option>
-    <option>Other</option>
-  </select>
-
-  <textarea id="reportDetails" placeholder="Optional details (what happened?)"></textarea>
-
-  <button onclick="submitReport()">Submit Report</button>
+  <iframe
+    src="https://docs.google.com/forms/d/e/1FAIpQLSfbgwBIa-DYrdoIpd-c8S8-u2tG8PHGspxutDkg17sYXam1vQ/viewform?usp=header">
+  </iframe>
 </div>
 
-<script>
-/* 🔐 PROTECTION */
-const user = localStorage.getItem("ml_user");
-if (!user) {
-  window.location.href = "ask-doubt.html";
-}
-
-/* 👤 USER DATA */
-document.getElementById("userName").textContent = user;
-const points = parseInt(localStorage.getItem("ml_points") || "0");
-document.getElementById("points").textContent = points;
-
-/* 🏅 BADGES */
-const badges = document.getElementById("badges");
-if (points >= 10) badges.innerHTML += "<li>Helper 🟢</li>";
-if (points >= 30) badges.innerHTML += "<li>Mentor 🔵</li>";
-if (points >= 50) badges.innerHTML += "<li>Legend 🟣</li>";
-
-/* 🔁 NAVIGATION */
-function goAsk() {
-  window.location.href = "ask-doubt.html";
-}
-function goHelp() {
-  window.location.href = "questions.html";
-}
-function logout() {
-  localStorage.clear();
-  window.location.href = "index.html";
-}
-
-/* 🤖 AI GUIDE */
-function aiRespond() {
-  const input = document.getElementById("aiInput").value.toLowerCase();
-  const box = document.getElementById("aiResponse");
-
-  if (input.includes("ask")) {
-    box.innerHTML = "📘 Click <b>Ask a Doubt</b> to share your question.";
-  } else if (input.includes("help")) {
-    box.innerHTML = "🤝 Click <b>Help Another Student</b> to answer questions.";
-  } else if (input.includes("points")) {
-    box.innerHTML = "⭐ Earn points by helping others. More points = more badges.";
-  } else if (input.includes("report")) {
-    box.innerHTML = "🚨 Use the <b>Report a Problem</b> section to maintain fair play.";
-  } else if (input.includes("logout")) {
-    box.innerHTML = "🚪 Click the red <b>Logout</b> button to exit.";
-  } else {
-    box.innerHTML = "🤔 Try asking: <i>'How do I help?' or 'How do I report misuse?'</i>";
-  }
-}
-
-/* 🚨 REPORT SYSTEM */
-function submitReport() {
-  const reason = document.getElementById("reportReason").value;
-  const details = document.getElementById("reportDetails").value;
-
-  if (!reason) {
-    alert("Please select a reason");
-    return;
-  }
-
-  let reports = JSON.parse(localStorage.getItem("ml_reports")) || [];
-
-  reports.push({
-    reportedBy: user,
-    reason: reason,
-    details: details,
-    time: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("ml_reports", JSON.stringify(reports));
-
-  alert("Report submitted. Thank you for keeping MentorLoop EDU safe.");
-  document.getElementById("reportReason").value = "";
-  document.getElementById("reportDetails").value = "";
-}
-
-/* 🚨 AUTO-WARNING SYSTEM */
-
-function checkWarnings() {
-  const user = localStorage.getItem("ml_user");
-  if (!user) return;
-
-  const reports = JSON.parse(localStorage.getItem("ml_reports")) || [];
-  const userReports = reports.filter(r => r.reportedBy === user);
-
-  if (userReports.length === 2) {
-    alert(
-      "⚠️ Fair Play Warning\n\n" +
-      "We’ve received multiple reports linked to your activity.\n" +
-      "Please follow MentorLoop EDU Fair Play guidelines."
-    );
-  }
-
-  if (userReports.length >= 3) {
-    alert(
-      "🚨 Account Under Review\n\n" +
-      "Your activity has been flagged multiple times.\n" +
-      "Please use MentorLoop EDU responsibly.\n" +
-      "A teacher may review this later."
-    );
-  }
-}
-
-/* Run check on dashboard load */
-checkWarnings();
-
-</script>
+<!-- LOGOUT -->
+<div class="card">
+  <a class="btn" href="index.html" style="background:#dc2626;">Logout</a>
+</div>
 
 </body>
 </html>
